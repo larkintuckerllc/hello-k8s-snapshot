@@ -1,0 +1,15 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: demo 
+spec:
+  accessModes:
+  - ReadWriteOnce
+  dataSource:
+    name: data-2021-07-15 
+    kind: VolumeSnapshot
+    apiGroup: snapshot.storage.k8s.io
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: standard-rwo

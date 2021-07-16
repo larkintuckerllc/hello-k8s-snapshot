@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: consumer-2021-07-16
+spec:
+  selector:
+    matchLabels:
+      app: consumer
+      day: 2021-07-16
+  serviceName: consumer
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: consumer
+        day: 2021-07-16
+    spec:
+      containers:
+      - name: ubuntu
+        command:
+        - tail
+        - -f
+        - /dev/null
+        image: ubuntu
+        volumeMounts:
+        - name: data
+          mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      dataSource:
+        name: data-2021-07-16
+        kind: VolumeSnapshot
+        apiGroup: snapshot.storage.k8s.io
+      resources:
+        requests:
+          storage: 10Gi
+      storageClassName: standard-rwo
+
+
